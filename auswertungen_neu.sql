@@ -1,4 +1,25 @@
+---Alle ADR's
+SELECT
+  *
+FROM
+  adr_entities
+LIMIT
+  50
 
+---Anzahl Einträge pro Status
+SELECT status, COUNT(*) AS Anzahl
+FROM adr_entities
+GROUP BY status;
+
+---Gesamtentscheisungszahl
+SELECT COUNT(*) AS Gesamtanzahl
+FROM adr_entities;
+
+---Letzte 5 Entscheidungen
+SELECT id, titel, random_date AS date
+FROM adr_entities 
+ORDER BY random_date DESC
+LIMIT 5;
 
 
 ---ZEITAUSWERTUNGEN
@@ -27,7 +48,13 @@ ORDER BY
     year_month;
 
 ---Desicions over Time
-
+SELECT
+    to_char(date_trunc('day', random_date), 'YYYY-MM-DD') AS day,
+    count(*) AS decision_count
+FROM adr_entities 
+WHERE decisions IS NOT NULL
+GROUP BY day
+ORDER BY day;
 
 ---Häufigkeit der Artefakte DESC
 SELECT
